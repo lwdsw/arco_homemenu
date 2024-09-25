@@ -52,7 +52,7 @@
                                                 <div class="name" t-out="result.name"/>
                                                 <div class="display_name" t-out="result.displayName"/>
                                             </div>
-                                        </div>
+                                        </a>
                                     </t>
                                 </div>
                             </div>
