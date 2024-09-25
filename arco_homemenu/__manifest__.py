@@ -35,10 +35,10 @@
             'arco_homemenu/static/src/webclient/**/*',
         ],
     },
-    # "images": [
-    #     "static/description/banner.gif",
-    #     "static/description/main_screenshot.gif",
-    # ],
+    "images": [
+        "static/description/banner.gif",
+        "static/description/main_screenshot.gif",
+    ],
     'application': True,
     'license': 'LGPL-3',
 }
