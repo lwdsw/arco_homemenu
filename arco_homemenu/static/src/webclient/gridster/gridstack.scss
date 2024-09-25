@@ -1,0 +1,219 @@
+.grid-stack.ui-droppable {
+  .arco-panel-title {
+    cursor: pointer;
+  }
+}
+
+.grid-stack-item {
+  padding: 5px !important;
+
+  .ui-resizable-se {
+    right: 5px !important;
+    bottom: 5px !important;
+  }
+
+  .arco-panel {
+    background: #eaeaea3d;
+
+    border-radius: 5px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .arco-panel-heading {
+      height: 40px;
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      width: 100%;
+
+      .arco-panel-title {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        padding-left: 10px;
+        padding-right: 10px;
+        font-size: 15px;
+        font-weight: 500;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #757575;
+      }
+
+      .arco-operate {
+        height: 28px;
+        width: 28px;
+        border-radius: 5px;
+        top: 5px;
+        right: 5px;
+        position: absolute;
+        display: inline-block;
+        cursor: pointer;
+
+        &:hover {
+          // background-color: #e4e4e4d4;
+          background-color: #e4e4e43d;
+
+          .arco-manager-dropdown {
+            height: auto;
+            opacity: 1;
+          }
+        }
+
+        .arco-manager-dropdown {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          height: 0;
+          opacity: 0;
+          transition: height 0.4s ease, opacity 0.4s ease;
+          width: auto;
+          padding-top: 3px;
+          z-index: 1;
+
+          .arco-manager-dropdownitem-box {
+            background-color: #e4e4e4d4;
+            border-radius: 5px;
+
+            .arco-manager-dropdownitem {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              flex-wrap: nowrap;
+
+              padding: 1px 10px;
+
+              .arco-rename {
+                width: 100%;
+                padding-bottom: 5px;
+
+                .arco-rename-input {
+                  width: 150px;
+                  margin-top: 10px;
+
+                  border: none;
+                  border-bottom: 1px solid #7c2ba9;
+                  background-color: transparent;
+                  color: #7c2ba9;
+
+                  &:focus {
+                    border-color: transparent;
+                    // background-color: #fff;
+                    border-bottom: 1px solid #7c2ba9;
+                  }
+
+                  &::placeholder {
+                    color: #7d2ba9ae;
+                  }
+                }
+              }
+
+              .arco-manager-btn {
+                width: 100%;
+                text-align: center;
+                padding: 2px;
+                border-radius: 3px;
+                margin-top: 5px;
+
+                &.arco-rename-btn {
+                  border: 1px solid #7c2ba9;
+                  background-color: #7c2ba912;
+                  color: #7c2ba9;
+
+                  &:hover {
+                    background-color: #7d2ba92b;
+                  }
+                }
+
+                &.arco-delete-btn {
+                  border: 1px solid #c22230;
+                  background-color: #c2222f29;
+                  color: #c22230;
+                  &:hover {
+                    background-color: #c2222f3d;
+                  }
+                }
+
+                &.arco-menus-btn {
+                  border: 1px solid #7c2ba9;
+                  background-color: #7c2ba912;
+                  color: #7c2ba9;
+
+                  &:hover {
+                    background-color: #7d2ba92b;
+                  }
+
+                  margin-bottom: 10px;
+                }
+              }
+
+              .arco-manager-text {
+                color: #7c2ba9;
+              }
+            }
+
+            div {
+              display: block;
+              white-space: nowrap;
+            }
+          }
+        }
+      }
+    }
+
+    .arco-panel-body {
+      width: 100%;
+      padding: 0 10px 10px 10px;
+      user-select: none;
+
+      height: calc(100% - 40px);
+      overflow-y: auto;
+
+      .arco-folder-menus {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(90px, 0));
+        justify-items: center;
+        gap: 10px;
+
+        .arco-folder-menu {
+          width: 90px;
+          height: 90px;
+          padding: 5px;
+          text-align: center;
+          border-radius: 5px;
+          color: white;
+          background-color: rgba(123, 123, 123, 0.08);
+
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+          }
+
+          .arco-app-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 5px;
+          }
+
+          .arco-app-name {
+            width: 100%;
+            padding: 0 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
