@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_arco_user_home,arco.user.home,model_arco_user_home,base.group_user,1,1,1,1
+access_arco_user_home_folder,arco.user.home.folder,model_arco_user_home_folder,base.group_user,1,1,1,1
+access_arco_user_home_folder_menu,arco.user.home.folder.menu,model_arco_user_home_folder_menu,base.group_user,1,1,1,1

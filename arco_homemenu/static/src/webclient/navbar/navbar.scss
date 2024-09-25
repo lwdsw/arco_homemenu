@@ -1,0 +1,413 @@
+.arco-o_navbar_apps_menu {
+  > div.dropdown-menu {
+    width: 100%;
+    height: 100%;
+
+    border: none;
+    max-height: unset;
+
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+
+    padding: 0;
+
+    .arco-home {
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+
+      .svg {
+        position: absolute;
+        z-index: -1;
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 45, 2, 0.3),
+          rgba(110, 2, 255, 0.46),
+          rgba(135, 0, 161, 0.5)
+        );
+
+        z-index: -1;
+      }
+
+      .arco-home-header {
+        height: 40px;
+        min-height: 40px;
+        color: black;
+        padding: 0 15px;
+
+        .arco-buttons {
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: flex-end;
+
+          .arco-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 2px;
+            background: #00000063;
+            margin: 5px;
+            cursor: pointer;
+
+            &.active {
+              background: #ffffff;
+            }
+          }
+
+          .fa-plus {
+            font-size: 15px;
+            margin-left: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+          }
+
+          .fa-pencil {
+            font-size: 15px;
+            margin-left: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+          }
+        }
+
+        .arco-manager {
+          position: absolute;
+          right: 15px;
+          top: 10px;
+
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+
+          .arco-manager-item {
+            background: #d9d9d999;
+            border-radius: 5px;
+            margin-left: 5px;
+            cursor: pointer;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            min-width: 32px;
+            width: auto;
+            overflow: hidden;
+            transition: all 0.4s ease;
+
+            // background-color: rgba(255, 255, 255, 0.77);
+            //   backdrop-filter: blur(1px);
+            //   -webkit-backdrop-filter: blur(1px);
+
+            .arco-manager-text {
+              color: #7c2ba9;
+              opacity: 0;
+              max-width: 0;
+              white-space: nowrap;
+              transition: opacity 0.4s ease, max-width 0.4s ease,
+                transform 0.4s ease;
+              transform: translateX(20px);
+            }
+
+            &:hover {
+              background-color: #e4e4e4d4;
+
+              .arco-manager-text {
+                opacity: 1;
+                display: inline-table;
+                padding-left: 10px;
+                transform: translateX(0);
+              }
+            }
+          }
+
+          .arco-divider {
+            border-bottom: 1px solid #7c2ba930;
+          }
+
+          .arco-manager-search {
+            height: 32px;
+            width: 32px;
+            background: #d9d9d999;
+            border-radius: 5px;
+            margin-left: 5px;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #e4e4e4d4;
+
+              .arco-manager-dropdown {
+                height: auto;
+                opacity: 1;
+              }
+            }
+
+            #searchContainer {
+              position: fixed;
+              top: 25%;
+              left: 50%;
+              transform: translateX(-50%);
+              padding: 10px;
+              border-radius: 8px;
+              // background-color: #f0f0f0ed;
+              // box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+              display: none;
+              opacity: 0;
+              transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+              z-index: 10;
+
+              background-color: rgba(255, 255, 255, 0.77);
+              backdrop-filter: blur(1px);
+              -webkit-backdrop-filter: blur(1px);
+            }
+
+            #searchInput {
+              padding: 10px;
+              width: 700px;
+              border: none;
+              outline: none;
+              background: transparent;
+              font-size: 20px;
+              color: #6a6a6a;
+              caret-color: #5431c5;
+
+              &::placeholder {
+                color: gray;
+              }
+            }
+
+            #searchResults {
+              margin-top: 10px;
+              padding: 10px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              max-height: 300px;
+              overflow-y: auto;
+            }
+
+            .search-result-item {
+              padding: 10px;
+              display: flex;
+              flex-direction: row;
+              flex-wrap: nowrap;
+              align-items: center;
+
+              .search-result-icon {
+                width: 50px;
+
+                img.arco-app-img {
+                  width: 100%;
+                  background: #a278ba4d;
+                  border-radius: 3px;
+                }
+              }
+
+              .search-result-name {
+                flex: 1;
+                padding-left: 10px;
+
+                .name {
+                  color: #6d6d6d;
+                  font-size: 16px;
+                }
+
+                .display_name {
+                  color: #818181;
+                  font-size: 14px;
+                }
+              }
+
+              .search_keyword {
+                color: #b13ae2;
+                color: #b13ae2;
+                background: #ec3f3f45;
+                padding: 3px;
+                border-radius: 3px;
+              }
+
+              &:hover {
+                background: #f3cdff;
+                border-radius: 3px;
+              }
+            }
+
+            button {
+              padding: 10px 20px;
+              background-color: #4caf50;
+              color: white;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+            }
+          }
+
+          .arco-manager-menus {
+            height: 32px;
+            width: 32px;
+            background: #d9d9d999;
+            border-radius: 5px;
+            margin-left: 5px;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #e4e4e4d4;
+
+              .arco-manager-dropdown {
+                height: auto;
+                opacity: 1;
+              }
+            }
+
+            .arco-manager-dropdown {
+              position: absolute;
+              top: 100%;
+              right: 0;
+              box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+              overflow: hidden;
+              height: 0;
+              opacity: 0;
+              transition: height 0.4s ease, opacity 0.4s ease;
+              width: auto;
+              padding-top: 5px;
+              z-index: 1;
+
+              .arco-manager-dropdownitem-box {
+                background-color: #e4e4e4d4;
+                border-radius: 5px;
+
+                .arco-manager-dropdownitem {
+                  // height: 32px !important;
+
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  flex-wrap: nowrap;
+
+                  padding: 1px 15px 1px 10px;
+
+                  .arco-manager-text {
+                    color: #7c2ba9;
+                  }
+
+                  &:hover {
+                    background-color: #eaeaead8;
+
+                    &:first-child {
+                      border-top-left-radius: 5px;
+                      border-top-right-radius: 5px;
+                    }
+
+                    &:last-child {
+                      border-bottom-left-radius: 5px;
+                      border-bottom-right-radius: 5px;
+                    }
+                  }
+                }
+
+                div {
+                  display: block;
+                  white-space: nowrap;
+
+                  // &:hover {
+                  //   background-color: #eaeaead8;
+                  // }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .arco-home-menus {
+        padding: 20px 60px;
+        overflow: auto;
+        padding-bottom: 50px;
+
+        flex: 1;
+
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(100px, 0));
+        justify-items: center;
+        gap: 10px;
+
+        .o_app {
+          display: inline-block;
+          width: 100px;
+          height: 100px;
+          margin: 10px;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: unset;
+          border-radius: 5px;
+
+          .arco-app-box {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-items: center;
+
+            .arco-app-icon {
+              .arco-app-img {
+                width: 70px;
+
+                background: #6f59cf42;
+                border-radius: 4px;
+              }
+            }
+
+            .arco-app-name {
+              text-align: center;
+              width: 70px;
+              white-space: nowrap;
+              overflow: hidden;
+              color: white;
+            }
+          }
+        }
+
+        &.arco-layout {
+          &.arco-show {
+            display: grid;
+          }
+          &.arco-hide {
+            display: none;
+          }
+        }
+      }
+
+      .arco-home-layout {
+        width: 100%;
+        padding: 20px 40px;
+        overflow-x: hidden;
+
+        &.arco-layout {
+          &.arco-show {
+            display: unset;
+          }
+          &.arco-hide {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="web.NavBar.AppsMenu" owl="1">
+        <Dropdown hotkey="'h'" title="'Home Menu'" class="'o_navbar_apps_menu arco-o_navbar_apps_menu'">
+            <t t-set-slot="toggler">
+                <i class="oi oi-apps" />
+            </t>
+
+            <div class="arco-home">
+
+                <div class="arco-home-header">
+                    <div class="arco-buttons">
+                        <div t-attf-class="arco-dot circle #{homeMenuState.currentHomeId == 0 ? 'active' : ''}" t-on-click="() => this.toggleCustomMenuLayout(0)">
+                        </div>
+                        <t t-foreach="homeMenuState.homeData" t-as="home" t-key="home.id">
+                            <div t-attf-class="arco-dot circle #{homeMenuState.currentHomeId == home.id ? 'active' : ''}" t-on-click="() => this.toggleCustomMenuLayout(home.id)">
+                            </div>
+                        </t>
+                    </div>
+
+                    <div class="arco-manager">
+                        <div class="arco-manager-item mb4" t-on-click="changeHomeMode">
+                            <div class="arco-manager-text">
+                                <span t-if="homeMenuState.mode == 'edit'" t-esc="'Edit Mode'"/>
+                                <span t-else="" t-esc="'Readonly Mode'"/>
+                            </div>
+                            <t t-call="arco_homemenu.NavBar.AppsMenu.ManagerSVG.EDIT"/>
+                        </div>
+                        <div class="arco-manager-search" t-on-click="openSearch">
+                            <t t-call="arco_homemenu.NavBar.AppsMenu.ManagerSVG.SEARCH"/>
+                            <div id="searchContainer">
+                                <input type="text" id="searchInput" placeholder="Search ..." t-on-input="(ev) => this.onSearchInput(ev)"/>
+                                <div id="searchResults" t-if="homeMenuState.searchResults.length > 0">
+                                    <t t-foreach="homeMenuState.searchResults" t-as="result" t-key="result_index">
+                                        <a class="search-result-item" t-att-href="getMenuItemHref(result)" t-on-click="(ev) => this.onMenuClick(ev, result)">
+                                            <div class="search-result-icon">
+                                                <t t-if="result.webIconData">
+                                                    <img t-if="result.webIconData.startsWith('P')" class="arco-app-img" t-attf-src="data:image/svg+xml;base64,#{result.webIconData}"/>
+                                                    <img t-else="" class="arco-app-img" t-attf-src="data:image/png;base64,#{result.webIconData}"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-if="result.webIcon">
+                                                        <img class="arco-app-img" t-attf-src="#{result.webIcon.replace(',', '/')}"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <img class="arco-app-img" t-attf-src="/base/static/description/icon.png"/>
+                                                    </t>
+                                                </t>
+                                            </div>
+                                            <div class="search-result-name">
+                                                <div class="name" t-out="result.name"/>
+                                                <div class="display_name" t-out="result.displayName"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="arco-manager-menus" t-if="homeMenuState.mode == 'edit'">
+                            <t t-call="arco_homemenu.NavBar.AppsMenu.ManagerSVG"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arco-home-menus" t-ref="mainMenusLayoutRef" t-attf-class="arco-layout #{homeMenuState.currentHomeId != 0 ? 'arco-hide' : 'arco-show'}">
+                    <DropdownItem t-foreach="apps" t-as="app" t-key="app.id" class="{ 'o_app': true, focus: menuService.getCurrentApp() === app }" href="getMenuItemHref(app)" dataset="{ menuXmlid: app.xmlid, section: app.id }" onSelected="() => this.onNavBarDropdownItemSelection(app)">
+                        <div class="arco-app-box">
+                            <div class="arco-app-icon">
+                                <t t-if="app.webIconData">
+                                    <img t-if="app.webIconData.startsWith('P')" class="arco-app-img" t-attf-src="data:image/svg+xml;base64,#{app.webIconData}"/>
+                                    <img t-else="" class="arco-app-img" t-attf-src="data:image/png;base64,#{app.webIconData}"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-if="app.webIcon">
+                                        <img class="arco-app-img" t-attf-src="#{app.webIcon.replace(',', '/')}"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img class="arco-app-img" t-attf-src="/base/static/description/icon.png"/>
+                                    </t>
+                                </t>
+                            </div>
+                            <div class="arco-app-name" t-att-title="app.name" t-esc="app.name"/>
+                        </div>
+                    </DropdownItem>
+                </div>
+
+                <div class="arco-home-layout" t-ref="gridsterLayoutRef" t-attf-class="arco-layout #{homeMenuState.currentHomeId != 0 ? 'arco-show' : 'arco-hide'}">
+                    <ArcoGridStack homeId="homeMenuState.currentHomeId" homeData="homeMenuState.homeData" mode="homeMenuState.mode"/>
+                </div>
+            </div>
+        </Dropdown>
+    </t>
+
+    <t t-name="arco_homemenu.NavBar.AppsMenu.ManagerSVG" owl="1">
+        <svg t="1726723932343" class="icon" viewBox="0 0 1024 1024" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" p-id="1807" width="32" height="32">
+            <path d="M512 590.1c-9.3 0-18.7-2.3-27-7L226 437.2c-14.3-8.1-22.9-22.7-22.9-39.2s8.6-31.1 22.9-39.2l259-145.9c16.6-9.4 37.3-9.4 54 0l259 145.9c14.3 8.1 22.9 22.7 22.9 39.2s-8.6 31.1-22.9 39.2L539 583.1c-8.3 4.7-17.7 7-27 7z m-12.3-33.2c7.6 4.3 17 4.3 24.5 0l259-145.9c6.9-3.9 7.6-10.4 7.6-13.1s-0.7-9.2-7.6-13.1l-259-145.9c-7.6-4.3-17-4.3-24.5 0l-259 145.9c-6.9 3.9-7.6 10.4-7.6 13.1s0.7 9.2 7.6 13.1l259 145.9z" fill="#7c2ba9" p-id="1808"></path>
+            <path d="M512 704.1c-9.3 0-18.7-2.3-27-7l-0.2-0.1-269-155.9c-7.2-4.2-9.6-13.3-5.5-20.5 4.2-7.2 13.3-9.6 20.5-5.5l269 155.9c7.5 4.2 16.9 4.2 24.4 0l268.9-155.8c7.2-4.2 16.3-1.7 20.5 5.5s1.7 16.3-5.5 20.5L539 697.1c-8.3 4.7-17.7 7-27 7z" fill="#7c2ba9" p-id="1809"></path>
+            <path d="M512 818.1c-9.3 0-18.7-2.3-27-7l-0.2-0.1-269-155.9c-7.2-4.2-9.6-13.3-5.5-20.5s13.3-9.6 20.5-5.5l269 155.9c7.5 4.2 16.9 4.2 24.4 0l268.9-155.8c7.2-4.2 16.3-1.7 20.5 5.5s1.7 16.3-5.5 20.5L539 811.1c-8.3 4.7-17.7 7-27 7z" fill="#7c2ba9" p-id="1810"></path>
+        </svg>
+        <div class="arco-manager-dropdown">
+            <div class="arco-manager-dropdownitem-box">
+                <div class="arco-manager-dropdownitem" t-on-click="setDefault">
+                    <t t-call="arco_homemenu.NavBar.AppsMenu.ManagerSVG.SET_DEFAULT"/>
+                    <div class="arco-manager-text">Set Default</div>
+                </div>
+                <div class="arco-divider"/>
+                <div class="arco-manager-dropdownitem" t-on-click="addNewHome">
+                    <t t-call="arco_homemenu.NavBar.AppsMenu.ManagerSVG.NEW"/>
+                    <div class="arco-manager-text">Add New Page</div>
+                </div>
+                <div class="arco-manager-dropdownitem" t-on-click="removeHome">
+                    <t t-call="arco_homemenu.NavBar.AppsMenu.ManagerSVG.DELETE"/>
+                    <div class="arco-manager-text">Remove Page</div>
+                </div>
+                <div class="arco-divider"/>
+                <div class="arco-manager-dropdownitem" t-on-click="addNewFolder">
+                    <t t-call="arco_homemenu.NavBar.AppsMenu.ManagerSVG.NEWFOLDER"/>
+                    <div class="arco-manager-text">Add New Folder</div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="arco_homemenu.NavBar.AppsMenu.ManagerSVG.SET_DEFAULT" owl="1">
+        <svg t="1727155555168" class="icon" viewBox="0 0 1024 1024" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" p-id="1785" width="32" height="32">
+            <path d="M455.111111 704.682667c-14.449778 0-28.387556-5.688889-38.684444-16.042667L314.254222 586.467556l-51.939555-50.062223a33.905778 33.905778 0 0 1 47.104-48.810666l52.565333 50.688 91.477333 91.477333 256.967111-363.52a33.905778 33.905778 0 1 1 55.409778 39.253333l-265.841778 376.035556a54.727111 54.727111 0 0 1-44.828444 23.153778z" fill="#7c2ba9" p-id="1786"></path>
+        </svg>
+    </t>
+
+    <t t-name="arco_homemenu.NavBar.AppsMenu.ManagerSVG.NEWFOLDER" owl="1">
+        <svg t="1726885244079" class="icon" viewBox="0 0 1024 1024" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" p-id="1142" width="32" height="32">
+            <path d="M676.69457477 512c10.74095052 0 21.48190106 10.74095052 21.48190106 21.48190106V619.40950529h78.76697055c10.74095052 0 21.48190106 10.74095052 21.48190106 21.48190105s-10.74095052 21.48190106-21.48190106 21.48190106H698.17647584v78.76697055c0 10.74095052-10.74095052 21.48190106-21.48190107 21.48190106S655.21267373 751.88122849 655.21267373 741.14027795V662.3733074H569.28506949c-10.74095052 0-21.48190106-10.74095052-21.48190106-21.48190105s10.74095052-21.48190106 21.48190106-21.48190107H655.21267373V533.48190106c0-10.74095052 10.74095052-21.48190106 21.48190104-21.48190106zM608.66855476 268.53845468c28.64253474 0 50.12443581 17.90158422 57.28506948 46.54411896l7.1606337 39.38348527h68.02602c32.22285159 0 57.28506949 25.0622179 57.2850695 57.2850695V512h-42.96380212V411.7511284c0-7.16063367-3.58031685-14.32126738-10.74095052-14.32126737H529.90158422c-17.90158422 0-35.80316842-14.32126738-42.96380211-32.2228516l-7.16063369-42.9638021c0-7.16063367-7.16063367-10.74095052-14.32126738-10.74095055H282.85972205c-7.16063367 0-14.32126738 7.16063367-14.32126737 14.32126739v372.35295167c0 7.16063367 7.16063367 14.32126738 14.32126737 14.32126737H547.80316842v42.96380211H282.85972205c-28.64253474 0-53.70475265-21.48190106-57.28506949-53.70475264v-375.93326851C225.57465256 293.60067258 250.63687046 268.53845468 282.85972205 268.53845468h325.80883271z m0 42.9638021h-89.50792108v3.58031686l7.16063369 39.38348527h100.24887161L619.40950529 322.24320732c3.58031685-7.16063367-3.58031685-10.74095052-10.74095053-10.74095053z" fill="#7c2ba9" p-id="1143"></path>
+        </svg>
+    </t>
+
+    <t t-name="arco_homemenu.NavBar.AppsMenu.ManagerSVG.NEW" owl="1">
+        <svg t="1726885517186" class="icon" viewBox="0 0 1024 1024" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" p-id="998" width="32" height="32">
+            <path d="M703.29241444 233.90856933a52.14214326 52.14214326 0 0 1 51.89840589 47.13636172l0.24373736 5.00578153v208.568573a17.38071443 17.38071443 0 0 1-34.48306582 3.1285286l-0.27836301-3.1285286V286.05071258a17.38071443 17.38071443 0 0 0-14.25218582-17.10235141l-3.1285286-0.278363H320.98594857a17.38071443 17.38071443 0 0 0-17.10235141 14.25218582l-0.27836301 3.12852859v451.89857483a17.38071443 17.38071443 0 0 0 14.25218582 17.10235142l3.1285286 0.278363H459.85785674a17.38071443 17.38071443 0 0 1 3.12852861 34.48306583l-3.12852861 0.27836301H320.98594857a52.14214326 52.14214326 0 0 1-51.93371047-47.13636172l-0.20843278-5.00578154V286.05071258a52.14214326 52.14214326 0 0 1 47.10173606-51.89908481l5.04040719-0.24305844h382.30646587zM616.49271929 512a17.38071443 17.38071443 0 0 1 17.10235141 14.25218582l0.278363 3.1285286v104.2842865h106.1269138a17.38071443 17.38071443 0 0 1 3.12852859 34.48306582l-3.12852859 0.27836301H633.8734337V772.71071625a17.38071443 17.38071443 0 0 1-34.48306583 3.12852859l-0.278363-3.12852859V668.42642975H494.75846708a17.38071443 17.38071443 0 0 1-3.12852859-34.48306582l3.12852859-0.27836302h104.35353779V529.38071443a17.38071443 17.38071443 0 0 1 17.38071442-17.38071443z" fill="#7c2ba9" p-id="999"></path>
+        </svg>
+    </t>
+
+    <t t-name="arco_homemenu.NavBar.AppsMenu.ManagerSVG.DELETE" owl="1">
+        <svg t="1726726888450" class="icon" viewBox="0 0 1024 1024" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" p-id="44519" width="32" height="32">
+            <path d="M749.305 771.706c-5.562 0-10.815-2.162-14.677-6.102L512 542.28 289.527 763.595c-3.94 3.863-9.115 6.026-14.6 6.026-5.562 0-10.815-2.163-14.754-6.103-3.94-3.94-6.026-9.115-6.026-14.677 0-5.562 2.163-10.737 6.103-14.677l222.473-221.237-220.696-221.392c-8.111-8.11-8.034-21.32 0.077-29.354 3.94-3.862 9.115-6.025 14.677-6.025 5.562 0 10.737 2.163 14.677 6.102L512.154 483.65l222.628-221.392c3.94-3.94 9.115-6.025 14.6-6.025 5.562 0 10.815 2.163 14.754 6.18 8.034 8.11 8.034 21.243-0.077 29.354L541.431 513.004 764.06 736.327c8.034 8.111 8.034 21.243-0.077 29.354-3.94 3.863-9.115 6.025-14.677 6.025z" p-id="44520" fill="#7c2ba9"></path>
+        </svg>
+    </t>
+
+    <t t-name="arco_homemenu.NavBar.AppsMenu.ManagerSVG.SEARCH" owl="1">
+        <svg t="1727168798979" class="icon" viewBox="0 0 1024 1024" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" p-id="1031" width="32" height="32">
+            <path d="M472.7569268 745.72376245c-36.39087081 0-71.70155738-7.13084545-104.95167878-21.19428758-32.10747521-13.58071994-60.93977206-33.01792591-85.69506929-57.77390208-24.75529723-24.75529723-44.19318215-53.58827301-57.77390207-85.69506929-14.06412105-33.25080033-21.19428758-68.5614869-21.19428757-104.95235771s7.13084545-71.70087845 21.1949665-104.95167877c13.58071994-32.10679628 33.01860486-60.93909312 57.77390208-85.69506928 24.75597616-24.75529723 53.58759407-44.19318215 85.69506929-57.77322315C401.05536942 213.62405353 436.36673493 206.49320808 472.7569268 206.49320808S544.45780524 213.62405353 577.70724771 227.68817459c32.10747521 13.580041 60.93977206 33.01792591 85.69506927 57.77390208 24.75597616 24.75529723 44.19318215 53.58691513 57.77458102 85.69506928 14.06344212 33.2501214 21.19428758 68.56080797 21.19428758 104.95099984 0 69.88948211-26.62983443 136.15074008-74.98556189 186.57993246-6.44172728 6.71873241-17.10981968 6.94142282-23.82719423 0.50037448-6.71737455-6.44172728-6.94142282-17.10914076-0.50037449-23.82719423 42.30981878-44.12257299 65.60948118-102.10015532 65.60948118-163.25311271 0-130.0824266-105.82954064-235.91196724-235.91060936-235.91196722S236.84563849 346.0257192 236.84563849 476.10814579s105.82954064 235.91196724 235.91128831 235.91196725c22.11492229 0 44.00036483-3.05384584 65.0473237-9.0773497 8.94699431-2.5561871 18.2769075 2.61729118 20.83784714 11.56496444 2.56093964 8.94835219-2.61729118 18.2769075-11.56496442 20.83784714-24.06414226 6.88642915-49.06792939 10.37818752-74.32020643 10.37818753z" fill="#7C2BA9" p-id="1032"></path>
+            <path d="M800.6447832 816.20595408a16.79683104 16.79683104 0 0 1-12.03478686-5.05466481L643.18705247 662.82047041c-6.5157311-6.64608646-6.4104963-17.3148578 0.23559015-23.8305889 6.64676541-6.51708896 17.31621567-6.40981737 23.83058891 0.23559015l145.42294386 148.33081886c6.5157311 6.64608646 6.4104963 17.31553673-0.23491122 23.83058891a16.79886785 16.79886785 0 0 1-11.79648097 4.81907464z" fill="#7C2BA9" p-id="1033"></path>
+        </svg>
+    </t>
+
+    <t t-name="arco_homemenu.NavBar.AppsMenu.ManagerSVG.EDIT" owl="1">
+        <svg t="1726815839206" class="icon" viewBox="0 0 1024 1024" version="1.1"
+            xmlns="http://www.w3.org/2000/svg" p-id="4901" width="32" height="32">
+            <path d="M276.6 746.6c-8.4 0-16.6-3.3-22.7-9.4-8.1-8.1-11.2-19.9-8.3-30.9L275.2 596c3.1-11.5 9.2-22.1 17.6-30.5l338.9-338.9c15.9-15.9 37-24.6 59.4-24.6s43.5 8.7 59.4 24.6l14 14c32.8 32.8 32.8 86 0 118.8l-7.3 7.3c-7.8 7.8-20.5 7.8-28.3 0-7.8-7.8-7.8-20.5 0-28.3l7.3-7.3c17.2-17.2 17.2-45.1 0-62.2l-14-14c-8.3-8.3-19.4-12.9-31.1-12.9s-22.8 4.6-31.1 12.9L321.1 593.8c-3.5 3.5-6 7.8-7.2 12.6l-26 96.9 96.9-26c4.7-1.3 9.1-3.8 12.6-7.2L675.5 392c1-1 1.2-2.1 1.2-2.8 0-0.8-0.2-1.9-1.2-2.8l-47.8-47.9c-7.8-7.8-7.8-20.5 0-28.3 7.8-7.8 20.5-7.8 28.3 0l47.8 47.9c8.3 8.3 12.9 19.4 12.9 31.1 0 11.8-4.6 22.8-12.9 31.1L425.7 698.4c-8.4 8.4-19 14.5-30.5 17.6l-110.3 29.6c-2.8 0.7-5.5 1-8.3 1zM221.1 823.4h17.8c11 0 20-9 20-20s-9-20-20-20h-17.8c-11 0-20 9-20 20s9 20 20 20zM315.8 823.4h488c11 0 20-9 20-20s-9-20-20-20h-488c-11 0-20 9-20 20s9 20 20 20z" p-id="4902" fill="#7c2ba9"></path>
+        </svg>
+    </t>
+
+
+</templates>

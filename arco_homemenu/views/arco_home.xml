@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form -->
+    <record id="arco_user_home_folder_form_view" model="ir.ui.view">
+        <field name="name">arco.user.home.folder.form.view</field>
+        <field name="model">arco.user.home.folder</field>
+        <field name="arch" type="xml">
+            <form string="Menus Management">
+                <sheet>
+                    <field name="line_ids">
+                        <tree editable="bottom">
+                            <field name="folder_id" invisible="1"/>
+                            <field name="sequence" widget="handle"/>
+                            <field name="menu_id"/>
+                            <field name="menu_icon_data" widget="image" class="oe_avatar" options="{'preview_image':'image_128'}"/>
+                            <field name="new_icon_data" widget="image" class="oe_avatar" options="{'preview_image':'image_128'}"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
